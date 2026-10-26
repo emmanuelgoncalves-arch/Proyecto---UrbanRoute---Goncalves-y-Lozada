@@ -5,16 +5,32 @@
 package proyecto.estructura.de.datos.miguel.y.emmanuel;
 
 /**
+ * Punto de entrada de la aplicación. Crea la red de transporte y abre la
+ * ventana principal, que la comparte con los paneles.
  *
  * @author Windows 10
  */
 public class ProyectoEstructuraDeDatosMiguelYEmmanuel {
 
     /**
-     * @param args the command line arguments
+     * Inicia la aplicación.
+     *
+     * @param args argumentos de la línea de comandos; no se utilizan
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+        }
+
+        // La red de transporte comienza vacía y es compartida por todos los paneles.
+        Grafo grafo = new Grafo();
+
+        java.awt.EventQueue.invokeLater(() -> new MenuPrincipal(grafo).setVisible(true));
     }
-    
 }

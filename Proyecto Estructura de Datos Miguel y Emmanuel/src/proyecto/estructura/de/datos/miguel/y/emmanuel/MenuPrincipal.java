@@ -14,23 +14,51 @@ public class MenuPrincipal extends javax.swing.JFrame {
     
 
     private CardLayout cardLayout;
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuPrincipal.class.getName());
 
+    /** Red de transporte compartida por todos los paneles. */
+    private final Grafo grafo;
+
+    // Paneles que operan sobre la red, se conservan para refrescarlos al mostrarlos.
+    private PanelModificacion pModificacion;
+    private PanelRutas pRutas;
+
+    /** Crea la ventana con una red de transporte vacía. */
     public MenuPrincipal() {
-        initComponents(); 
-        initComponentsCustom(); 
+        this(new Grafo());
     }
-    
+
+    /**
+     * Crea la ventana principal.
+     *
+     * @param grafo red de transporte que utilizarán todos los paneles
+     */
+    public MenuPrincipal(Grafo grafo) {
+        this.grafo = grafo;
+        initComponents();
+        initComponentsCustom();
+    }
+
     private void initComponentsCustom() {
         cardLayout = new CardLayout();
-        panelContenedor.setLayout(cardLayout); 
+        panelContenedor.setLayout(cardLayout);
 
         PanelCarga pCarga = new PanelCarga();
-        PanelModificacion pModificacion = new PanelModificacion();
+        pModificacion = new PanelModificacion();
         PanelVisualizacion pVisualizacion = new PanelVisualizacion();
         PanelSubredes pSubredes = new PanelSubredes();
-        PanelRutas pRutas = new PanelRutas();
+        pRutas = new PanelRutas();
         PanelHubs pHubs = new PanelHubs();
+
+        // Los paneles comparten la misma red de transporte. Los paneles restantes se
+        // conectarán de la misma forma cuando estén disponibles el gestor de archivos
+        // y los algoritmos de análisis.
+        pModificacion.setGrafo(grafo);
+        pRutas.setGrafo(grafo);
+
+        // Tamaño inicial de la ventana (el calculado por pack() resulta insuficiente
+        // para los paneles) y centrado en pantalla.
+        setSize(820, 560);
+        setLocationRelativeTo(null);
 
         panelContenedor.add(pCarga, "CARGA");
         panelContenedor.add(pModificacion, "MODIFICAR");
@@ -42,6 +70,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     // Método reutilizable para cambiar de pantalla mediante los botones del menú
     public void cambiarVista(String vista) {
+        // Se actualiza el panel antes de mostrarlo, ya que otro panel pudo haber
+        // modificado la red.
+        if (vista.equals("MODIFICAR")) {
+            pModificacion.refrescar();
+        } else if (vista.equals("RUTAS")) {
+            pRutas.refrescar();
+        }
         cardLayout.show(panelContenedor, vista);
     }
 
@@ -157,31 +192,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         cambiarVista("HUBS");
     }//GEN-LAST:event_botonHubsActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new MenuPrincipal().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonCargar;

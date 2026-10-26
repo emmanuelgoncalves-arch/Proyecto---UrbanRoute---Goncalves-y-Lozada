@@ -15,6 +15,7 @@ public class PanelRutas extends javax.swing.JPanel {
      */
     public PanelRutas() {
         initComponents();
+        configurarEventos();
     }
 
     /**
@@ -33,8 +34,13 @@ public class PanelRutas extends javax.swing.JPanel {
         jComboBox2 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
 
-        jLabel1.setText("Cálculo de Ruta Óptima");
+        jLabel1.setText("Administración de Rutas ");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
@@ -49,33 +55,55 @@ public class PanelRutas extends javax.swing.JPanel {
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
+        jButton1.setText("Calcular Ruta ");
+
+        jButton2.setText("Agregar Ruta");
+
+        jButton3.setText("Eliminar Ruta");
+
+        jTextField1.setText("Tiempo de Ruta");
+
+        jLabel4.setText("Tiempo de Ruta");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(137, 137, 137)
                         .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel3))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
+                                .addGap(11, 11, 11)
                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(14, 14, 14)))))
+                                .addGap(17, 17, 17)))))
                 .addGap(52, 52, 52))
             .addGroup(layout.createSequentialGroup()
-                .addGap(74, 74, 74)
+                .addGap(77, 77, 77)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addGap(36, 36, 36)
+                        .addComponent(jButton3))
+                    .addComponent(jLabel4))
+                .addGap(26, 26, 26))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -89,10 +117,18 @@ public class PanelRutas extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -100,14 +136,230 @@ public class PanelRutas extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    // ------------------------------------------------------------------
+    // Lógica del panel (código fuera de las zonas generadas por NetBeans).
+    //
+    // Componentes generados que utiliza esta lógica:
+    //   jComboBox1  -> estación de origen     jComboBox2  -> estación de destino
+    //   jTextField1 -> tiempo en minutos      jButton1    -> calcular ruta
+    //   jButton2    -> agregar conexión       jButton3    -> eliminar conexión
+    //   jTextArea1  -> resultados
+    // ------------------------------------------------------------------
+
+    /** Red de transporte sobre la que opera el panel; se asigna con {@link #setGrafo(Grafo)}. */
+    private Grafo grafo;
+
+    /**
+     * Asigna la red de transporte sobre la que opera el panel y actualiza la vista.
+     *
+     * @param grafo red compartida con el resto de los paneles
+     */
+    public void setGrafo(Grafo grafo) {
+        this.grafo = grafo;
+        refrescar();
+    }
+
+    /**
+     * Actualiza las listas de estaciones de origen y destino con el estado
+     * actual del grafo. Debe invocarse cada vez que el panel pasa a mostrarse,
+     * porque otros paneles pueden haber modificado la red.
+     */
+    public void refrescar() {
+        if (grafo == null) {
+            return;
+        }
+        llenarLista(jComboBox1);
+        llenarLista(jComboBox2);
+    }
+
+    /**
+     * Inicializa el campo de tiempo y asocia cada botón con su acción. El texto
+     * de ejemplo definido en el diseñador se vacía y el ancho del campo se fija
+     * con {@code setColumns}, ya que de otro modo dependería del texto inicial.
+     */
+    private void configurarEventos() {
+        jTextField1.setText("");
+        jTextField1.setColumns(10);
+        jTextArea1.setEditable(false);
+        jButton1.addActionListener(evt -> calcularRuta());
+        jButton2.addActionListener(evt -> agregarConexion());
+        jButton3.addActionListener(evt -> eliminarConexion());
+    }
+
+    /** Cálculo de la ruta óptima; pendiente de conectar con el algoritmo de ruta mínima. */
+    private void calcularRuta() {
+        jTextArea1.setText("El cálculo de la ruta óptima todavía no está implementado.");
+    }
+
+    /**
+     * Agrega una conexión entre las estaciones de origen y destino seleccionadas
+     * con el tiempo indicado. Si la conexión ya existe, actualiza su tiempo.
+     */
+    private void agregarConexion() {
+        Estacion origen = estacionSeleccionada(jComboBox1);
+        Estacion destino = estacionSeleccionada(jComboBox2);
+        if (!extremosValidos(origen, destino)) {
+            return;
+        }
+        int tiempo = leerTiempo();
+        if (tiempo < 0) {
+            return;
+        }
+        boolean existia = grafo.existeConexion(origen.getId(), destino.getId());
+        boolean hecho = existia
+                ? grafo.modificarConexion(origen.getId(), destino.getId(), tiempo)
+                : grafo.agregarConexion(origen.getId(), destino.getId(), tiempo);
+        if (!hecho) {
+            avisar("No se pudo guardar la conexión.");
+            return;
+        }
+        informar((existia ? "Tiempo actualizado: " : "Conexión agregada: ")
+                + origen.getId() + " - " + destino.getId() + " (" + tiempo + " min).", origen);
+    }
+
+    /** Elimina la conexión directa entre las estaciones de origen y destino seleccionadas. */
+    private void eliminarConexion() {
+        Estacion origen = estacionSeleccionada(jComboBox1);
+        Estacion destino = estacionSeleccionada(jComboBox2);
+        if (!extremosValidos(origen, destino)) {
+            return;
+        }
+        if (!grafo.eliminarConexion(origen.getId(), destino.getId())) {
+            avisar("No existe una conexión directa entre " + origen.getId()
+                    + " y " + destino.getId() + ".");
+            return;
+        }
+        informar("Conexión eliminada: " + origen.getId() + " - " + destino.getId() + ".", origen);
+    }
+
+    /**
+     * Comprueba que se hayan seleccionado dos estaciones distintas, e informa al
+     * usuario cuando no es así.
+     *
+     * @param origen estación de origen seleccionada
+     * @param destino estación de destino seleccionada
+     * @return {@code true} si hay red y las dos estaciones son válidas y distintas
+     */
+    private boolean extremosValidos(Estacion origen, Estacion destino) {
+        if (grafo == null) {
+            return false;
+        }
+        if (origen == null || destino == null) {
+            avisar("Seleccione la estación de origen y la de destino.");
+            return false;
+        }
+        if (origen.equals(destino)) {
+            avisar("El origen y el destino deben ser estaciones distintas.");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Lee el tiempo en minutos del campo de texto, e informa al usuario cuando
+     * el valor no es válido.
+     *
+     * @return el tiempo, mayor que 0, o -1 si el valor no es un entero positivo
+     */
+    private int leerTiempo() {
+        int tiempo;
+        try {
+            tiempo = Integer.parseInt(jTextField1.getText().trim());
+        } catch (NumberFormatException ex) {
+            avisar("El tiempo debe ser un número entero de minutos.");
+            return -1;
+        }
+        if (tiempo <= 0) {
+            avisar("El tiempo debe ser mayor que 0.");
+            return -1;
+        }
+        return tiempo;
+    }
+
+    /**
+     * Obtiene la estación seleccionada en una lista desplegable. La posición del
+     * elemento elegido coincide con su posición en {@code grafo.getEstaciones()},
+     * porque las listas se llenan en ese orden.
+     *
+     * @param lista lista desplegable consultada
+     * @return la estación seleccionada, o {@code null} si no hay red o selección
+     */
+    private Estacion estacionSeleccionada(javax.swing.JComboBox<String> lista) {
+        if (grafo == null) {
+            return null;
+        }
+        int posicion = lista.getSelectedIndex();
+        if (posicion < 0) {
+            return null;
+        }
+        return grafo.getEstaciones().acceder(posicion);
+    }
+
+    /**
+     * Llena una lista desplegable con las estaciones de la red, en el orden de
+     * {@code grafo.getEstaciones()}, y marca las que están cerradas.
+     *
+     * @param lista lista desplegable que se llena
+     */
+    private void llenarLista(javax.swing.JComboBox<String> lista) {
+        lista.removeAllItems();
+        Nodo<Estacion> nodo = grafo.getEstaciones().getCabeza();
+        while (nodo != null) {
+            Estacion e = nodo.getDato();
+            lista.addItem(e.getId() + " - " + e.getNombre() + (e.estaActiva() ? "" : " [CERRADA]"));
+            nodo = nodo.getSiguiente();
+        }
+    }
+
+    /**
+     * Muestra el resultado de una operación junto con las conexiones directas
+     * de una estación.
+     *
+     * @param mensaje descripción del resultado de la operación
+     * @param estacion estación cuyas conexiones directas se listan
+     */
+    private void informar(String mensaje, Estacion estacion) {
+        StringBuilder sb = new StringBuilder(mensaje);
+        sb.append("\n\nConexiones directas de ").append(estacion.getId()).append(":\n");
+        Nodo<Arista> nodo = grafo.getAristasDe(estacion).getCabeza();
+        if (nodo == null) {
+            sb.append("  (ninguna)\n");
+        }
+        while (nodo != null) {
+            Arista a = nodo.getDato();
+            sb.append("  ").append(a.getDestino().getId()).append(" (")
+              .append(a.getTiempoMin()).append(" min)")
+              .append(a.getDestino().estaActiva() ? "" : " [CERRADA]").append("\n");
+            nodo = nodo.getSiguiente();
+        }
+        jTextArea1.setText(sb.toString());
+        jTextArea1.setCaretPosition(0);
+    }
+
+    /**
+     * Muestra un aviso de error o de validación al usuario. Se declara
+     * {@code protected} para permitir su sustitución en pruebas automatizadas
+     * sin abrir diálogos.
+     *
+     * @param mensaje texto del aviso
+     */
+    protected void avisar(String mensaje) {
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Aviso",
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
