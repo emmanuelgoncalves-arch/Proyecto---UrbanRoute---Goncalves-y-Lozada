@@ -54,7 +54,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
         // y los algoritmos de análisis.
         pModificacion.setGrafo(grafo);
         pRutas.setGrafo(grafo);
-
+        pCarga.setGrafo(grafo);
+        pCarga.cargarMaestroInicial();
+        
         // Tamaño inicial de la ventana (el calculado por pack() resulta insuficiente
         // para los paneles) y centrado en pantalla.
         setSize(820, 560);
@@ -175,6 +177,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     private void botonVisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVisualizarActionPerformed
 
+VisualizadorGrafo visualizador = new VisualizadorGrafo();
+visualizador.mostrarVentana(grafo);
         cambiarVista("VISUALIZAR");
     }//GEN-LAST:event_botonVisualizarActionPerformed
 

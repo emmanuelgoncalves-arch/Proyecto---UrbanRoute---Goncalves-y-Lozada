@@ -4,6 +4,10 @@
  */
 package proyecto.estructura.de.datos.miguel.y.emmanuel;
 
+import java.io.File;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Windows 10
@@ -13,8 +17,109 @@ public class PanelCarga extends javax.swing.JPanel {
     /**
      * Creates new form PanelCarga
      */
+    /** Red de transporte compartida con los demás paneles. */
+    private Grafo grafo;
+
+    /** Gestor que lee y escribe el archivo de la red. */
+    private final GestorArchivo gestor = new GestorArchivo();
+
+    /**
+     * Creates new form PanelCarga
+     */
     public PanelCarga() {
         initComponents();
+        estadoArchivo.setEditable(false);
+    }
+
+    /**
+     * Asocia el panel a la red de transporte compartida.
+     *
+     * @param grafo red que se carga y se guarda desde este panel
+     */
+    public void setGrafo(Grafo grafo) {
+        this.grafo = grafo;
+    }
+
+    /**
+     * Carga el archivo maestro al iniciar la aplicación y muestra el resultado
+     * en el área de estado. Si no se puede cargar, lo indica en esa misma área.
+     */
+    public void cargarMaestroInicial() {
+        if (grafo == null) {
+            return;
+        }
+        try {
+            mostrarEstado(gestor.cargarArchivoMaestro(grafo));
+        } catch (IOException ex) {
+            mostrarEstado("No se pudo cargar el archivo maestro (" + GestorArchivo.ARCHIVO_MAESTRO + "):\n"
+                    + ex.getMessage() + "\n\nUse \"Cargar Archivo\" para elegir otro.");
+        }
+    }
+
+    /**
+     * Muestra un texto en el área de estado.
+     *
+     * @param texto mensaje que se muestra
+     */
+    private void mostrarEstado(String texto) {
+        estadoArchivo.setText(texto);
+        estadoArchivo.setCaretPosition(0);
+    }
+
+    /**
+     * Avisa que al cargar un archivo nuevo se perderán los datos que hay en
+     * memoria y permite guardarlos antes.
+     *
+     * @return {@code true} si se puede continuar con la carga
+     */
+    private boolean confirmarSobrescritura() {
+        if (grafo.getNumEstaciones() == 0) {
+            return true;
+        }
+        Object[] opciones = {"Guardar y cargar", "Cargar sin guardar", "Cancelar"};
+        int respuesta = JOptionPane.showOptionDialog(this,
+                "Hay una red en memoria. Al cargar un archivo nuevo se sobrescribirán los datos actuales.\n"
+                + "Se recomienda guardarlos antes de continuar.",
+                "Guardar antes de cargar", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+                null, opciones, opciones[0]);
+        if (respuesta == 0) {
+            return guardarRepositorio();
+        }
+        return respuesta == 1;
+    }
+
+    /**
+     * Guarda la red en el archivo fuente; si todavía no hay uno, pide dónde
+     * guardarla.
+     *
+     * @return {@code true} si la red quedó guardada
+     */
+    private boolean guardarRepositorio() {
+        if (grafo.getNumEstaciones() == 0) {
+            int respuesta = JOptionPane.showConfirmDialog(this,
+                    "La red en memoria está vacía; guardarla dejaría el archivo sin datos.\n¿Desea continuar?",
+                    "Red vacía", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (respuesta != JOptionPane.YES_OPTION) {
+                return false;
+            }
+        }
+        try {
+            if (gestor.hayArchivoFuente()) {
+                gestor.guardar(grafo);
+            } else {
+                File destino = gestor.seleccionarDestino(this);
+                if (destino == null) {
+                    return false;
+                }
+                gestor.guardarComo(destino, grafo);
+            }
+            mostrarEstado("Repositorio actualizado: " + gestor.getArchivoFuente().getName());
+            return true;
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo guardar el archivo:\n" + ex.getMessage(),
+                    "Error al guardar", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
     }
 
     /**
@@ -35,8 +140,10 @@ public class PanelCarga extends javax.swing.JPanel {
         jLabel1.setText("Gestión de Archivos y Datos de Red");
 
         botonCargarArchivo.setText("Cargar Archivo ");
+        botonCargarArchivo.addActionListener(this::botonCargarArchivoActionPerformed);
 
         botonActualizarRepo.setText("Guardar Cambios");
+        botonActualizarRepo.addActionListener(this::botonActualizarRepoActionPerformed);
 
         estadoArchivo.setColumns(20);
         estadoArchivo.setRows(5);
@@ -77,6 +184,34 @@ public class PanelCarga extends javax.swing.JPanel {
                 .addGap(40, 40, 40))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void botonCargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCargarArchivoActionPerformed
+        if (grafo == null) {
+            mostrarEstado("No hay una red asociada a este panel.");
+            return;
+        }
+        if (!confirmarSobrescritura()) {
+            return;
+        }
+        File archivo = gestor.seleccionarArchivo(this);
+        if (archivo == null) {
+            return;
+        }
+        try {
+            mostrarEstado(gestor.cargar(archivo, grafo));
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo cargar el archivo:\n" + ex.getMessage()
+                    + "\n\nLa red en memoria no se modificó.", "Error de carga", JOptionPane.ERROR_MESSAGE);
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_botonCargarArchivoActionPerformed
+
+    private void botonActualizarRepoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizarRepoActionPerformed
+        if (grafo == null) {
+            mostrarEstado("No hay una red asociada a este panel.");
+            return;
+        }
+        guardarRepositorio();        // TODO add your handling code here:
+    }//GEN-LAST:event_botonActualizarRepoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
