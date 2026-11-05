@@ -474,4 +474,110 @@ public class Grafo {
         vertices = nuevosVertices;
         adyacencia = nuevaAdyacencia;
     }
+    
+    // ------------------------------------------------------------------
+    // Algoritmo de Dijkstra
+    // ------------------------------------------------------------------
+
+    /**
+     * Calcula la ruta de menor tiempo entre dos estaciones usando el algoritmo de Dijkstra.
+     * Ignora las estaciones que se encuentren cerradas.
+     *
+     * @return un objeto Ruta con el trayecto y el tiempo, o null si no hay camino posible
+     */
+    public Ruta calcularRutaMinima(String idOrigen, String idDestino) {
+        Estacion origen = buscarEstacion(idOrigen);
+        Estacion destino = buscarEstacion(idDestino);
+
+        // Verificamos existencia y estado de las estaciones
+        if (origen == null || destino == null) {
+            return null;
+        }
+        if (!origen.estaActiva() || !destino.estaActiva()) {
+            return null; 
+        }
+
+        int n = vertices.length; 
+        int[] tiempos = new int[n];
+        boolean[] visitados = new boolean[n];
+        Estacion[] previos = new Estacion[n];
+
+        // Inicialización
+        for (int i = 0; i < n; i++) {
+            tiempos[i] = Integer.MAX_VALUE; // Representa infinito
+            visitados[i] = false;
+            previos[i] = null;
+        }
+        tiempos[origen.getIndice()] = 0;
+
+        // Ciclo principal del algoritmo
+        for (int i = 0; i < numEstaciones; i++) {
+            // Encontrar la estación no visitada con el menor tiempo acumulado
+            int u = -1;
+            int minTiempo = Integer.MAX_VALUE;
+            
+            for (int j = 0; j < numEstaciones; j++) {
+                if (!visitados[j] && tiempos[j] < minTiempo) {
+                    minTiempo = tiempos[j];
+                    u = j;
+                }
+            }
+
+            // Si no hay nodos alcanzables o ya llegamos al destino, detenemos la búsqueda
+            if (u == -1 || u == destino.getIndice()) {
+                break;
+            }
+
+            visitados[u] = true;
+
+            // Actualizar tiempos de los vecinos
+            Nodo<Arista> nodo = adyacencia[u].getCabeza();
+            while (nodo != null) {
+                Arista arista = nodo.getDato();
+                Estacion vecino = arista.getDestino();
+                int v = vecino.getIndice();
+
+                // Solo consideramos estaciones activas y no visitadas
+                if (vecino.estaActiva() && !visitados[v]) {
+                    int tiempoAlternativo = tiempos[u] + arista.getTiempoMin();
+                    
+                    // Si encontramos un camino más rápido, actualizamos
+                    if (tiempoAlternativo < tiempos[v]) {
+                        tiempos[v] = tiempoAlternativo;
+                        previos[v] = vertices[u];
+                    }
+                }
+                nodo = nodo.getSiguiente();
+            }
+        }
+
+        // Si el tiempo al destino sigue siendo infinito, es inalcanzable
+        if (tiempos[destino.getIndice()] == Integer.MAX_VALUE) {
+            return null;
+        }
+
+        // Reconstrucción del camino (de destino a origen)
+        int contadorEstaciones = 0;
+        Estacion actual = destino;
+        while (actual != null) {
+            contadorEstaciones++;
+            actual = previos[actual.getIndice()];
+        }
+
+        // Usamos un arreglo temporal para invertir el orden (de origen a destino)
+        Estacion[] arrayCamino = new Estacion[contadorEstaciones];
+        actual = destino;
+        for (int i = contadorEstaciones - 1; i >= 0; i--) {
+            arrayCamino[i] = actual;
+            actual = previos[actual.getIndice()];
+        }
+
+        // Vaciamos el arreglo en la ListaEnlazada final que necesita la clase Ruta
+        ListaEnlazada<Estacion> caminoFinal = new ListaEnlazada<>();
+        for (int i = 0; i < contadorEstaciones; i++) {
+            caminoFinal.insertarAlFinal(arrayCamino[i]);
+        }
+
+        return new Ruta(caminoFinal, tiempos[destino.getIndice()]);
+    }
 }
